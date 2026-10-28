@@ -1,0 +1,16 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "private": true,
+  "description": "仿 LINE 的家族聊天室（Cloudflare Workers + Durable Objects）",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "icons": "node scripts/gen-icons.mjs",
+    "test": "node scripts/test-api.mjs",
+    "test:security": "node scripts/test-security.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
