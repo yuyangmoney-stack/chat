@@ -117,7 +117,7 @@ ChatServer Durable Object（src/chatserver.js）
 | 想做什麼 | 指令／位置 |
 |---|---|
 | 本機開發預覽 | `npm run dev` → http://localhost:8787 |
-| 跑 API 測試 | 另開終端機 `npm test`（隱私規則、權限、聊天核心功能、待辦行事曆、管理員；建議先 `rm -rf .wrangler/state` 用乾淨資料） |
+| 跑 API 測試 | 另開終端機 `npm test`（隱私規則、權限、聊天核心功能、待辦行事曆、管理員，以及速度與備份上限（照片多的聊天室打得開、備份不會撐爆伺服器記憶體）；建議先 `rm -rf .wrangler/state` 用乾淨資料） |
 | 跑資安測試 | `npm run test:security`（攻擊者視角：越權、假 token、XSS、SQL injection、SSRF、照片網址授權、暴力破解；務必用乾淨資料） |
 | 部署／更新 | Actions → 部署到 Cloudflare → Run workflow，或 `npx wrangler deploy` |
 | 重新產生 App 圖示 | `npm run icons`（改 `scripts/gen-icons.mjs` 裡的 `BRAND` 顏色後執行） |
