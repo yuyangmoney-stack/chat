@@ -13,6 +13,7 @@
 | 💛 **互動** | 表情回應、回覆引用、投票、群組公告、訊息搜尋、**連結預覽卡片**、未讀分隔線、聊天室置頂 |
 | 🔔 **離線推播** | 網頁沒開也收得到通知（Web Push，金鑰自動產生、零設定） |
 | ✅ **待辦清單／📅 行事曆** | 全家共用，行事曆到時間自動通知所有人。在聊天室右上角 ☰ 裡 |
+| 🌾 **家族牧場** | 每個聊天室一座共用的像素風農場，開在另一個視窗：角色走來走去、翻土播種澆水、作物跟著現實時間長大、收成出貨賺錢，全家同時在線看得到彼此。玩法見[使用手冊](docs/使用手冊.md#八家族牧場) |
 | 💚 **LINE 風格** | 藍色聊天底、綠色泡泡、第一則訊息帶小尾巴、回覆引用放在泡泡裡、「Aa」輸入框（沒打字時是麥克風，打字後變送出） |
 | 🎨 **外觀** | 六種聊天背景（LINE 藍、簡約白、薄荷、蜜桃、奶茶、夜空）、多種字型、深色模式、四段字體大小（長輩友善）、上班低調模式 |
 | 🔐 **邀請碼註冊** | 只有拿到邀請碼的人能註冊；第一位註冊者自動成為管理員 |
@@ -26,7 +27,7 @@
 | 文件 | 給誰看 |
 |---|---|
 | [docs/部署手冊.md](docs/部署手冊.md) | **要架站的人**。註冊 Cloudflare、拿 token、設定 GitHub Secrets、部署、備份、疑難排解，每一步都有說明，不需要會寫程式 |
-| [docs/使用手冊.md](docs/使用手冊.md) | **所有使用者（含長輩）**。加到主畫面、聊天、照片語音、通知、外觀、隱私 |
+| [docs/使用手冊.md](docs/使用手冊.md) | **所有使用者（含長輩）**。加到主畫面、聊天、照片語音、家族牧場、通知、外觀、隱私 |
 
 ---
 
@@ -117,8 +118,10 @@ ChatServer Durable Object（src/chatserver.js）
 | 想做什麼 | 指令／位置 |
 |---|---|
 | 本機開發預覽 | `npm run dev` → http://localhost:8787 |
-| 跑 API 測試 | 另開終端機 `npm test`（隱私規則、權限、聊天核心功能、待辦行事曆、管理員，以及速度與備份上限（照片多的聊天室打得開、備份不會撐爆伺服器記憶體）；建議先 `rm -rf .wrangler/state` 用乾淨資料） |
-| 跑資安測試 | `npm run test:security`（攻擊者視角：越權、假 token、XSS、SQL injection、SSRF、照片網址授權、暴力破解；務必用乾淨資料） |
+| 跑 API 測試 | 另開終端機 `npm test`（隱私規則、權限、聊天核心功能、待辦行事曆、家族牧場、管理員，以及速度與備份上限（照片多的聊天室打得開、備份不會撐爆伺服器記憶體）；建議先 `rm -rf .wrangler/state` 用乾淨資料） |
+| 跑資安測試 | `npm run test:security`（攻擊者視角：越權、假 token、XSS、SQL injection、SSRF、照片網址授權、家族牧場權限、暴力破解；務必用乾淨資料） |
+| 跑牧場規則測試 | `npm run test:farm`（不用開伺服器） |
+| 本機快轉牧場時間 | `npx wrangler dev --var FARM_TIME_SCALE:3600`（1 秒＝1 小時，方便測試作物成熟；**只給本機用，正式環境不要設**） |
 | 部署／更新 | Actions → 部署到 Cloudflare → Run workflow，或 `npx wrangler deploy` |
 | 重新產生 App 圖示 | `npm run icons`（改 `scripts/gen-icons.mjs` 裡的 `BRAND` 顏色後執行） |
 | 備份聊天資料 | 網頁「設定」→「管理員」→「下載聊天備份」 |
@@ -133,11 +136,15 @@ src/chatserver.js     聊天伺服器：帳號、訊息、群組、WebSocket（D
 public/index.html     前端頁面骨架
 public/app.js         前端邏輯
 public/style.css      LINE 風格樣式（全尺寸響應式）
+src/farm.js           家族牧場的規則（地圖、作物、體力、成長計算）
+public/farm.html + farm.js + farm.css   家族牧場視窗
+public/farm-sprites.js  牧場的像素圖（全部用程式畫，沒有外部圖檔）
 public/manifest.webmanifest + sw.js + icons/   PWA（加到主畫面）
 public/fonts/         自架手寫字型（含授權檔）
 scripts/gen-icons.mjs 產生 App 圖示（零相依）
 scripts/test-api.mjs  API 測試
 scripts/test-security.mjs  資安測試
+scripts/test-farm.mjs 牧場規則測試
 .github/workflows/deploy.yml  GitHub Actions 部署
 ```
 
