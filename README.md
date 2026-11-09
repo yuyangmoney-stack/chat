@@ -142,6 +142,7 @@ src/farm.js           家族牧場的規則（地圖、作物、體力、成長�
 public/farm.html + farm.js + farm.css   家族牧場視窗
 public/farm-sprites.js  牧場的像素圖（全部用程式畫，沒有外部圖檔）
 public/farm-art.js      32×32 的精細像素圖（地面、作物、人物、動物、樹；一樣用程式畫，自動補明暗和外框）
+public/farm-art-town.js 兩倍解析度的建築與小鎮（房子、動物小屋、商店、溫室、小鎮的店、柵欄、石板路、池塘）
 public/manifest.webmanifest + sw.js + icons/   PWA（加到主畫面）
 public/fonts/         自架手寫字型（含授權檔）
 scripts/gen-icons.mjs 產生 App 圖示（零相依）
