@@ -220,7 +220,8 @@ check('訊息清單不再夾帶圖片內容', imgMsg.content === '' && typeof me
 const good = await raw(mediaUrl);
 check('簽章正確就拿得到圖（而且是二進位、不是 base64）', good.status === 200 && good.ctype === 'image/jpeg' && good.len > 0 && good.len < TINY_JPG.length);
 check('沒有簽章不給拿', (await raw(`/api/media/${imgMsg.id}`)).status === 403);
-check('竄改簽章不給拿', (await raw(mediaUrl.replace(/&s=./, '&s=A'))).status === 403);
+// 把簽章第一個字換掉（本來就是 A 的話換成 B，不然網址根本沒變）
+check('竄改簽章不給拿', (await raw(mediaUrl.replace(/&s=(.)/, (m, c) => '&s=' + (c === 'A' ? 'B' : 'A')))).status === 403);
 check('改成別人的 id 不給拿（簽章綁了收件者）',
   (await raw(mediaUrl.replace(/u=\d+/, `u=${IC}`))).status === 403);
 check('把到期日改長一點不給拿', (await raw(mediaUrl.replace(/e=\d+/, 'e=99999999999999'))).status === 403);
